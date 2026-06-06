@@ -1,0 +1,27 @@
+{
+  "name": "report",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build:pdf": "marp slide.md --pdf --allow-local-files",
+    "build:html": "marp slide.md --html",
+    "dev": "marp -w -p -s slide.md",
+    "build": "marp slide.md -o dist/index.html"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devEngines": {
+    "packageManager": {
+      "name": "pnpm",
+      "version": "^11.3.0",
+      "onFail": "download"
+    }
+  },
+  "type": "module",
+  "devDependencies": {
+    "@marp-team/marp-cli": "^4.4.0"
+  }
+}
