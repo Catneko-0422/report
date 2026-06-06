@@ -13,13 +13,7 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "devEngines": {
-    "packageManager": {
-      "name": "pnpm",
-      "version": "^11.3.0",
-      "onFail": "download"
-    }
-  },
+  "packageManager": "pnpm@11.3.0",
   "type": "module",
   "devDependencies": {
     "@marp-team/marp-cli": "^4.4.0"
