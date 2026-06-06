@@ -8,7 +8,7 @@
     "build:pdf": "marp slide.md --pdf --allow-local-files",
     "build:html": "marp slide.md --html",
     "dev": "marp --allow-local-files -w -s .",
-    "build": "marp slide.md -o dist/index.html"
+    "build": "marp slide.md --html --allow-local-files -o dist/index.html"
   },
   "keywords": [],
   "author": "",
