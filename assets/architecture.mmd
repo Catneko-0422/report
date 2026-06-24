@@ -1,0 +1,30 @@
+flowchart TB
+    subgraph Client["前端 (React 19 + Vite 8)"]
+        CP["CodingPage<br>點選編碼 + AI 自動填充"]
+        RTE["RuleTreeEditor<br>規則樹編輯器"]
+    end
+
+    subgraph Backend["後端 (Flask + Gunicorn)"]
+        API["API Blueprints<br>auth / admin / rule_tree<br>encode / auto_encode"]
+        LS["LLM Service<br>LangChain + ChatOllama<br>+ ReAct Agent"]
+        MCP["MCP Tools<br>get_material_rules<br>query_rag_examples<br>extract_field_patterns"]
+    end
+
+    subgraph DB["資料庫"]
+        PG[("PostgreSQL 16<br>users / rule_tree_nodes(2654)<br>part_numbers(363) / audit_logs")]
+        RD[("Redis 7<br>規則樹快取 5min<br>Rate Limiting")]
+    end
+
+    subgraph AI["AI 推論"]
+        OL["Ollama"]
+        GM["Gemma4:latest<br>Q4_K_M · temp=0"]
+    end
+
+    Client -->|HTTP / SSE| API
+    API --> LS
+    LS --> MCP
+    MCP -.->|查詢| DB
+    LS -->|ChatOllama| OL
+    OL --- GM
+    API --> PG
+    API --> RD

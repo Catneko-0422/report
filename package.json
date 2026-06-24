@@ -5,9 +5,10 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
+    "mmdc": "mmdc -i assets/architecture.mmd -o assets/architecture.svg -b transparent -w 1280 -H 720 && mmdc -i assets/ai-flow.mmd -o assets/ai-flow.svg -b transparent -w 1280 -H 720",
     "build:pdf": "marp slide.md --pdf --allow-local-files",
-    "dev": "marp nlp.md --html --allow-local-files -o nlp.html && marp dl.md --html --allow-local-files -o dl.html && marp --allow-local-files -w -s .",
-    "build": "mkdir -p dist && cp index.html dist/index.html && marp slide.md --html --allow-local-files -o dist/slide.html && marp nlp.md --html --allow-local-files -o dist/nlp.html && marp dl.md --html --allow-local-files -o dist/dl.html && cp -r assets dist/"
+    "dev": "pnpm mmdc && marp nlp.md --html --allow-local-files -o nlp.html && marp dl.md --html --allow-local-files -o dl.html && marp --allow-local-files -w -s .",
+    "build": "pnpm mmdc && mkdir -p dist && cp index.html dist/index.html && marp slide.md --html --allow-local-files -o dist/slide.html && marp nlp.md --html --allow-local-files -o dist/nlp.html && marp dl.md --html --allow-local-files -o dist/dl.html && cp -r assets dist/"
   },
   "keywords": [],
   "author": "",
@@ -15,6 +16,8 @@
   "packageManager": "pnpm@11.3.0",
   "type": "module",
   "devDependencies": {
-    "@marp-team/marp-cli": "^4.4.0"
+    "@marp-team/marp-cli": "^4.4.0",
+    "@mermaid-js/mermaid-cli": "^11.15.0",
+    "puppeteer": "^25.2.0"
   }
 }

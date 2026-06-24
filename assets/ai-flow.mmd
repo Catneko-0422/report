@@ -1,0 +1,21 @@
+flowchart LR
+    START(["使用者填寫規格<br>Description / MFG Part / Vendor PN"]) --> PROMPT
+
+    subgraph PROMPT["① 組裝 Rich Prompt（全部 inline）"]
+        PI["━━ PRODUCT INFO ━━<br>Description: CHIP RESISTOR...<br>MFG Part: RC0603FR-0710KL"]
+        FI["Encoding Fields:<br>Field 0: 電阻種類 [01]貼片 [02]碳膜<br>Field 1: 電阻值 (input, 4 chars)"]
+        HI["History:<br>1001R-002 → 電容值=10U0"]
+    end
+
+    PROMPT --> AGENT
+
+    AGENT["② ReAct Agent<br>create_react_agent"] --> TOOL{"③ 可選用 MCP 工具"}
+    TOOL --> RULES["get_material_rules<br>查詢編碼規則樹"]
+    TOOL --> RAG["query_rag_examples<br>搜尋歷史料號(RAG)"]
+    TOOL --> PATTERN["extract_field_patterns<br>分析編碼模式"]
+
+    RULES & RAG & PATTERN --> AGENT
+    AGENT --> LLM["④ Gemma4 推論<br>temperature=0<br>num_predict=8192"]
+    LLM --> PARSE["⑤ JSON 解析<br>_extract_json()"]
+    PARSE --> MATCH["⑥ 四層模糊匹配<br>exact code → label → regex → difflib"]
+    MATCH --> RESULT["⑦ 回傳結果<br>field_predictions (node_id)<br>+ field_confidences (0.0~1.0)"]
