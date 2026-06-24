@@ -452,6 +452,84 @@ document.addEventListener('click',function(e){for(var t=e.target;t;t=t.parentEle
 
 ---
 
+## 02　研究方法
+
+### 系統架構圖
+
+```mermaid
+flowchart TB
+    subgraph Client["前端 (React 19 + Vite 8)"]
+        CP["CodingPage<br/>點選編碼 + AI 自動填充"]
+        RTE["RuleTreeEditor<br/>規則樹編輯器"]
+    end
+
+    subgraph Backend["後端 (Flask + Gunicorn)"]
+        API["API Blueprints<br/>auth / admin / rule_tree<br/>encode / auto_encode"]
+        LS["LLM Service<br/>LangChain + ChatOllama<br/>+ ReAct Agent"]
+        MCP["MCP Tools<br/>get_material_rules<br/>query_rag_examples<br/>extract_field_patterns"]
+    end
+
+    subgraph DB["資料庫"]
+        PG[("PostgreSQL 16<br/>users / rule_tree_nodes(2654)<br/>part_numbers(363) / audit_logs")]
+        RD[("Redis 7<br/>規則樹快取 5min<br/>Rate Limiting")]
+    end
+
+    subgraph AI["AI 推論"]
+        OL["Ollama"]
+        GM["Gemma4:latest<br/>Q4_K_M · temp=0"]
+        OL --- GM
+    end
+
+    Client -->|HTTP / SSE| API
+    API --> LS
+    LS --> MCP
+    MCP -.->|查詢| DB
+    LS -->|ChatOllama| OL
+    API --> PG
+    API --> RD
+
+    classDef client fill:#fce4ec,stroke:#880e4f
+    classDef backend fill:#e1f5fe,stroke:#01579b
+    classDef db fill:#e8f5e9,stroke:#1b5e20
+    classDef ai fill:#f3e5f5,stroke:#4a148c
+    class CP,RTE client
+    class API,LS,MCP backend
+    class PG,RD db
+    class OL,GM ai
+```
+
+---
+
+## 02　研究方法
+
+### LLM 自動編碼流程 (ReAct Agent)
+
+```mermaid
+flowchart LR
+    START(["使用者填寫規格<br/>Description / MFG Part / Vendor PN"]) --> PROMPT
+
+    subgraph PROMPT["① 組裝 Rich Prompt（全部 inline）"]
+        PI["━━ PRODUCT INFO ━━<br/>Description: CHIP RESISTOR...<br/>MFG Part: RC0603FR-0710KL"]
+        FI["Encoding Fields:<br/>Field 0: 電阻種類 [01]貼片 [02]碳膜<br/>Field 1: 電阻值 (input, 4 chars)"]
+        HI["History:<br/>1001R-002 → 電容值=10U0"]
+    end
+
+    PROMPT --> AGENT
+
+    AGENT["② ReAct Agent<br/>create_react_agent"] --> TOOL{"③ 可選用 MCP 工具"}
+    TOOL --> RULES["get_material_rules<br/>查詢編碼規則樹"]
+    TOOL --> RAG["query_rag_examples<br/>搜尋歷史料號(RAG)"]
+    TOOL --> PATTERN["extract_field_patterns<br/>分析編碼模式"]
+
+    RULES & RAG & PATTERN --> AGENT
+    AGENT --> LLM["④ Gemma4 推論<br/>temperature=0<br/>num_predict=8192"]
+    LLM --> PARSE["⑤ JSON 解析<br/>_extract_json()"]
+    PARSE --> MATCH["⑥ 四層模糊匹配<br/>exact code → label → regex → difflib"]
+    MATCH --> RESULT["⑦ 回傳結果<br/>field_predictions (node_id)<br/>+ field_confidences (0.0~1.0)"]
+```
+
+---
+
 ## 03　研究分工
 
 | 角色 | 姓名 | 學號 | 負責工作 | 進度 |
