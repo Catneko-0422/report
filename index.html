@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>期末報告 簡報選單</title>
+  <style>
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Noto Sans TC', 'Segoe UI', sans-serif;
+      background: #1e1e2e url('./assets/background.jpg') center / cover fixed;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 20px;
+      color: #cdd6f4;
+    }
+
+    .overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(24, 24, 37, 0.65);
+      backdrop-filter: blur(12px) saturate(160%);
+      -webkit-backdrop-filter: blur(12px) saturate(160%);
+      z-index: 0;
+    }
+
+    .container {
+      position: relative;
+      z-index: 1;
+      max-width: 900px;
+      width: 100%;
+      background: rgba(24, 24, 37, 0.78);
+      backdrop-filter: blur(18px) saturate(160%);
+      -webkit-backdrop-filter: blur(18px) saturate(160%);
+      border: 1px solid rgba(255, 255, 255, 0.09);
+      border-radius: 24px;
+      padding: 50px 48px 44px;
+      box-shadow: 0 12px 60px rgba(0, 0, 0, 0.70), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+      text-align: center;
+    }
+
+    h1 {
+      font-size: 2.2em;
+      color: #fab387;
+      text-shadow: 0 0 20px rgba(250, 179, 135, 0.30);
+      margin-bottom: 6px;
+    }
+
+    .subtitle {
+      font-size: 1.05em;
+      color: #b4befe;
+      margin-bottom: 36px;
+    }
+
+    .cards {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .card {
+      display: block;
+      text-decoration: none;
+      color: inherit;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.07);
+      border-radius: 16px;
+      padding: 22px 28px;
+      text-align: left;
+      transition: all 0.25s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 4px;
+      background: linear-gradient(180deg, #89b4fa, #cba6f7, #f38ba8);
+      border-radius: 0 2px 2px 0;
+      opacity: 0.6;
+      transition: opacity 0.25s ease;
+    }
+
+    .card:hover {
+      background: rgba(255, 255, 255, 0.08);
+      border-color: rgba(137, 180, 250, 0.30);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 24px rgba(0, 0, 0, 0.35);
+    }
+
+    .card:hover::before {
+      opacity: 1;
+    }
+
+    .card h2 {
+      font-size: 1.25em;
+      color: #89b4fa;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .card p {
+      font-size: 0.92em;
+      color: #a6adc8;
+      line-height: 1.5;
+    }
+
+    .card .badge {
+      display: inline-block;
+      font-size: 0.78em;
+      padding: 2px 12px;
+      border-radius: 20px;
+      margin-top: 8px;
+      font-weight: 500;
+    }
+
+    .badge-done {
+      background: rgba(166, 227, 161, 0.18);
+      color: #a6e3a1;
+      border: 1px solid rgba(166, 227, 161, 0.25);
+    }
+
+    .badge-new {
+      background: rgba(250, 179, 135, 0.18);
+      color: #fab387;
+      border: 1px solid rgba(250, 179, 135, 0.25);
+    }
+
+    .footer-note {
+      margin-top: 30px;
+      font-size: 0.85em;
+      color: #585b70;
+    }
+  </style>
+</head>
+<body>
+  <div class="overlay"></div>
+  <div class="container">
+    <h1>📄 期末報告</h1>
+    <p class="subtitle">選擇一份簡報開始報告</p>
+
+    <div class="cards">
+      <a class="card" href="./slide.html">
+        <h2>AI 與我的人生</h2>
+        <p>批判思考與生涯抉擇</p>
+        <span class="badge badge-done">已完成</span>
+      </a>
+
+      <a class="card" href="./nlp.html">
+        <h2>自然語言處理</h2>
+        <p>ERP 生管料號自動編碼輔助系統</p>
+        <span class="badge badge-done">已完成</span>
+      </a>
+
+      <a class="card" href="./dl.html">
+        <h2>深度學習</h2>
+        <p>神經網路、CNN、GAN 與強化學習</p>
+        <span class="badge badge-new">新簡報</span>
+      </a>
+    </div>
+
+    <p class="footer-note">使用 Marp 製作・國立雲林科技大學 資訊管理系</p>
+  </div>
+</body>
+</html>

@@ -6,9 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build:pdf": "marp slide.md --pdf --allow-local-files",
-    "build:html": "marp slide.md --html",
-    "dev": "marp --allow-local-files -w -s .",
-    "build": "marp slide.md --html --allow-local-files -o dist/index.html && cp -r assets dist/"
+    "dev": "marp nlp.md --html --allow-local-files -o nlp.html && marp dl.md --html --allow-local-files -o dl.html && marp --allow-local-files -w -s .",
+    "build": "mkdir -p dist && cp index.html dist/index.html && marp slide.md --html --allow-local-files -o dist/slide.html && marp nlp.md --html --allow-local-files -o dist/nlp.html && marp dl.md --html --allow-local-files -o dist/dl.html && cp -r assets dist/"
   },
   "keywords": [],
   "author": "",

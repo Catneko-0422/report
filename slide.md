@@ -4,7 +4,7 @@ theme: gaia
 _class: lead
 paginate: true
 header: ' '
-footer: ' '
+footer: '← 回選單'
 transition: fade 0.35s
 style: |
   section {
@@ -329,7 +329,41 @@ style: |
     color: #585b70;
     font-size: 13px;
   }
+
+  footer {
+    position: absolute !important;
+    top: 10px !important;
+    right: 22px !important;
+    bottom: auto !important;
+    left: auto !important;
+    height: auto !important;
+    width: auto !important;
+    padding: 6px 16px !important;
+    line-height: 1 !important;
+    font-size: 15px !important;
+    color: #89b4fa !important;
+    background: rgba(24, 24, 37, 0.55) !important;
+    backdrop-filter: blur(8px) !important;
+    -webkit-backdrop-filter: blur(8px) !important;
+    border-radius: 10px !important;
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+    cursor: pointer !important;
+    z-index: 5 !important;
+    opacity: 0;
+    transition: opacity 0.25s ease;
+    pointer-events: auto !important;
+  }
+  footer:hover {
+    opacity: 1 !important;
+  }
+  section:hover footer {
+    opacity: 0.6;
+  }
 ---
+
+<script>
+document.addEventListener('click',function(e){for(var t=e.target;t;t=t.parentElement)if(t.tagName==='FOOTER'){location.href='./index.html';return}})
+</script>
 
 <!-- _paginate: false -->
 
